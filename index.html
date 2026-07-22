@@ -23,18 +23,25 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-    var map = L.map('map').setView([38.57, -8.90], 11);
+// Meldingen
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
+L.marker([38.56269957966968, -8.87521672994725])
 
-    L.marker([38.57, -8.90])
-        .addTo(map)
-        .bindPopup('Palmela')
-        .openPopup();
-</script>
+    .addTo(map)
+
+    .bindPopup('Melding 1');
+
+L.marker([38.56733510739968, -8.875168534004013])
+
+    .addTo(map)
+
+    .bindPopup('Melding 2');
+
+L.marker([38.56436821764578, -8.877762647593704])
+
+    .addTo(map)
+
+    .bindPopup('Melding test 3');
 
 </body>
 </html>
