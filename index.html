@@ -40,11 +40,16 @@
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Melding 1
+    //Melding 1
     L.marker([38.56269957966968, -8.87521672994725])
-        .addTo(map)
-        .bindPopup("<b>Melding 1</b><br>Illegale stortplaats");
-
+    .addTo(map)
+    .bindPopup(`
+        <h3>Melding 1</h3>
+        <p>Illegale stortplaats</p>
+        <img src="https://www.dropbox.com/scl/fi/y6yzc749j93k4d0es9e22/image-1.jpg?rlkey=s6fmpk4u99d6rp8mgcthp6k6x&raw=1"
+             style="width:250px;max-width:100%;">
+            `);
+            
     // Melding 2
     L.marker([38.56733510739968, -8.875168534004013])
         .addTo(map)
