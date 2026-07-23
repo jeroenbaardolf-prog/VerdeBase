@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>VerdeBase Kaart</title>
+    <title>VerdeBase Map</title>
 
     <link rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -11,20 +11,86 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
         }
+
+        /* ===== Header ===== */
+
+        #header {
+            background: white;
+            padding: 18px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.15);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title h1 {
+            margin: 0;
+            color: #2E7D32;
+            font-size: 34px;
+        }
+
+        .title p {
+            margin: 6px 0 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .counter {
+            background: #2E7D32;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* ===== Map ===== */
 
         #map {
             width: 100%;
-            height: 100vh;
+            height: calc(100vh - 95px);
         }
 
+        /* ===== Popup ===== */
+
         .leaflet-popup-content {
-            font-family: Arial, sans-serif;
+            width: 420px !important;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .leaflet-popup-content h3 {
+            margin-top: 0;
+            color: #2E7D32;
+            font-size: 24px;
+        }
+
+        .leaflet-popup-content img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
+
+<div id="header">
+
+    <div class="title">
+        <h1>🌿 VerdeBase</h1>
+        <p>Mapping illegal construction waste in Palmela</p>
+    </div>
+
+    <div class="counter">
+        📍 Reports: <span id="reportCount">1</span>
+    </div>
+
+</div>
 
 <div id="map"></div>
 
@@ -32,33 +98,23 @@
 
 <script>
 
-    // Kaart centreren op Palmela
-    var map = L.map('map').setView([38.565, -8.875], 15);
+var map = L.map('map').setView([38.565, -8.875], 15);
 
-    // OpenStreetMap achtergrond
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+}).addTo(map);
 
-    //Melding 1
-    L.marker([38.56269957966968, -8.87521672994725])
-    .addTo(map)
-    .bindPopup(`
-        <h3>Melding 1</h3>
-        <p>Illegale stortplaats</p>
-        <img src="https://www.dropbox.com/scl/fi/y6yzc749j93k4d0es9e22/image-1.jpg?rlkey=s6fmpk4u99d6rp8mgcthp6k6x&raw=1"
-             style="width:700px;max-width:100%;">
-            `);
-            
-    // Melding 2
-    L.marker([38.56733510739968, -8.875168534004013])
-        .addTo(map)
-        .bindPopup("<b>Melding 2</b><br>Illegale stortplaats");
+L.marker([38.56269957966968, -8.87521672994725])
+.addTo(map)
+.bindPopup(`
+<h3>Construction Waste Report</h3>
 
-    // Melding 3
-    L.marker([38.56436821764578, -8.877762647593704])
-        .addTo(map)
-        .bindPopup("<b>Melding 3</b><br>Illegale stortplaats");
+<p>
+Illegal construction and demolition waste reported at this location.
+</p>
+
+<img src="https://www.dropbox.com/scl/fi/y6yzc749j93k4d0es9e22/image-1.jpg?rlkey=s6fmpk4u99d6rp8mgcthp6k6x&raw=1">
+`);
 
 </script>
 
