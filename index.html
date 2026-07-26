@@ -111,7 +111,8 @@ var reports = [
     {
         lat: 38.56269957966968,
         lng: -8.87521672994725,
-        title: "Entulho de construção"
+        title: "Entulho de construção",
+        date: "26-07-2026"
     }
 
 ];
@@ -142,8 +143,13 @@ reports.forEach(function(report) {
     .addTo(map)
     .bindPopup(`
         <h3>${report.title}</h3>
+
         <p>
-        Resíduos de construção e demolição identificados neste local.
+            <strong>Data do registo:</strong> ${report.date}
+        </p>
+
+        <p>
+            Resíduos de construção e demolição identificados neste local.
         </p>
     `);
 
