@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
     <meta charset="utf-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
     <title>VerdeBase Map</title>
 
     <link rel="stylesheet"
@@ -19,7 +23,7 @@
 
         #header {
             background: white;
-            padding: 15px 30px;
+            padding: 30px 30px 15px 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,.15);
 
             display: flex;
@@ -301,7 +305,8 @@ gpsControl.onAdd = function() {
     button.style.fontSize = '34px';
     button.style.cursor = 'pointer';
     button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-    button.style.marginTop = '60px';
+    button.style.marginTop = '20px';
+    button.style.marginLeft = '12px';
 
     L.DomEvent.on(button, 'click', function(e) {
         L.DomEvent.stopPropagation(e);
