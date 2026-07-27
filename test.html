@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>VerdeBase Map</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* Header */
+
+        #header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.15);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 42px;
+        }
+
+        .title h1 a {
+            text-decoration: none;
+            color: #2E7D32;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            height: 90px;
+            width: auto;
+            margin-right: 12px;
+        }
+
+       .counter {
+        background: #2E7D32;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 22px;
+        font-weight: bold;
+        }
+
+        /* Map */
+
+        #map {
+            width: 100%;
+            height: calc(100vh - 120px);
+        }
+
+        /* Popups */
+
+        .leaflet-popup-content {
+            width: 420px !important;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .leaflet-popup-content h3 {
+            margin-top: 0;
+            color: #2E7D32;
+            font-size: 24px;
+        }
+
+        .leaflet-popup-content img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="header">
+
+    <div class="title">
+        <h1>
+            <a href="https://verdebase.carrd.co" target="_blank">
+                <img src="IMG_3966.png" class="logo-icon">
+                VerdeBase
+            </a>
+        </h1>
+    </div>
+
+         <div class="counter">
+            🚮 Resíduos: <span id="reportCount">0</span>
+        </div>
+
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map').setView([38.565, -8.875], 14);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+// ===== GPS gebruiker =====
+
+var userMarker;
+var accuracyCircle;
+
+function locateUser() {
+
+    map.locate({
+        setView: true,
+        maxZoom: 17,
+        enableHighAccuracy: true
+    });
+
+}
+
+map.on('locationfound', function(e) {
+
+    if (userMarker) {
+        map.removeLayer(userMarker);
+    }
+
+    if (accuracyCircle) {
+        map.removeLayer(accuracyCircle);
+    }
+
+    userMarker = L.circleMarker(e.latlng, {
+        radius: 10,
+        fillColor: '#4285F4',
+        color: '#ffffff',
+        weight: 3,
+        fillOpacity: 1
+    }).addTo(map);
+
+    accuracyCircle = L.circle(e.latlng, {
+        radius: e.accuracy,
+        color: '#4285F4',
+        fillColor: '#4285F4',
+        fillOpacity: 0.15,
+        weight: 1
+    }).addTo(map);
+
+});
+
+map.on('locationerror', function() {
+    alert('Não foi possível obter a sua localização.');
+});
+
+// ===== Meldingen =====
+
+var reports = [
+
+{
+    lat: 38.56269957966968,
+    lng: -8.87521672994725,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "12-07-2026"
+},
+
+{
+    lat: 38.56733510739968,
+    lng: -8.875168534004013,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "12-07-2026"
+},
+
+{
+    lat: 38.56436821764578,
+    lng: -8.877762647593704,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "18-07-2026"
+},
+
+{
+    lat: 38.5662481766729,
+    lng: -8.872544959216482,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "18-07-2026"
+},
+
+{
+    lat: 38.56175569240257,
+    lng: -8.871115704288261,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "19-07-2026"
+},
+
+{
+    lat: 38.57060664734581,
+    lng: -8.854474502988547,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "21-07-2026"
+},
+
+{
+    lat: 38.570586955850544,
+    lng: -8.854578171688466,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "21-07-2026"
+},
+
+{
+    lat: 38.574882510676,
+    lng: -8.85491496600609,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "21-07-2026"
+},
+
+{
+    lat: 38.56325903840659,
+    lng: -8.850115884052547,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "22-07-2026"
+},
+
+{
+    lat: 38.5632961578136,
+    lng: -8.850205888014797,
+    title: "Depósito ilegal de resíduos de construção",
+    date: "22-07-2026"
+}
+
+];
+
+// ===== Counter =====
+
+document.getElementById("reportCount").innerText = reports.length;
+
+// ===== Rode marker =====
+
+var redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+
+    iconSize: [50, 82],
+    iconAnchor: [25, 82],
+    popupAnchor: [0, -76],
+    shadowSize: [82, 82]
+});
+
+// ===== Markers plaatsen =====
+
+reports.forEach(function(report) {
+
+    L.marker([report.lat, report.lng], {
+        icon: redIcon
+    })
+    .addTo(map)
+    .bindPopup(`
+        <h3>${report.title}</h3>
+
+        <p>
+            <strong>Data do registo:</strong> ${report.date}
+        </p>
+    `);
+
+// ===== GPS knop =====
+
+var gpsControl = L.control({ position: 'bottomright' });
+
+gpsControl.onAdd = function() {
+
+    var button = L.DomUtil.create('button');
+
+    button.innerHTML = '📍';
+    button.title = 'A minha localização';
+
+    button.style.width = '50px';
+    button.style.height = '50px';
+    button.style.background = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '8px';
+    button.style.fontSize = '24px';
+    button.style.cursor = 'pointer';
+    button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+
+    L.DomEvent.on(button, 'click', function(e) {
+        L.DomEvent.stopPropagation(e);
+        locateUser();
+        });
+
+    return button;
+    };
+
+    gpsControl.addTo(map);
+
+});
+
+</script>
+
+</body>
+</html>
