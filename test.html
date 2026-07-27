@@ -274,7 +274,7 @@ reports.forEach(function(report) {
 
 // ===== GPS knop =====
 
-var gpsControl = L.control({ position: 'bottomright' });
+var gpsControl = L.control({ position: 'topleft' });
 
 gpsControl.onAdd = function() {
 
@@ -291,6 +291,7 @@ gpsControl.onAdd = function() {
     button.style.fontSize = '34px';
     button.style.cursor = 'pointer';
     button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    button.style.marginTop = '60px';
 
     L.DomEvent.on(button, 'click', function(e) {
         L.DomEvent.stopPropagation(e);
