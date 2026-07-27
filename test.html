@@ -141,7 +141,7 @@ map.on('locationfound', function(e) {
     }
 
     userMarker = L.circleMarker(e.latlng, {
-        radius: 10,
+        radius: 20,
         fillColor: '#4285F4',
         color: '#ffffff',
         weight: 3,
@@ -152,7 +152,7 @@ map.on('locationfound', function(e) {
         radius: e.accuracy,
         color: '#4285F4',
         fillColor: '#4285F4',
-        fillOpacity: 0.15,
+        fillOpacity: 0.25,
         weight: 1
     }).addTo(map);
 
@@ -283,12 +283,12 @@ gpsControl.onAdd = function() {
     button.innerHTML = '📍';
     button.title = 'A minha localização';
 
-    button.style.width = '50px';
-    button.style.height = '50px';
+    button.style.width = '70px';
+    button.style.height = '70px';
     button.style.background = 'white';
     button.style.border = 'none';
     button.style.borderRadius = '8px';
-    button.style.fontSize = '24px';
+    button.style.fontSize = '34px';
     button.style.cursor = 'pointer';
     button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
 
