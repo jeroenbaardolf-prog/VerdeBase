@@ -276,13 +276,28 @@ reports.forEach(function(report) {
         icon: redIcon
     })
     .addTo(map)
-    .bindPopup(`
-        <h3>${report.title}</h3>
+    
+.bindPopup(`
+    ${report.photo ? `
+        <img
+            src="${report.photo}"
+            loading="lazy"
+            style="
+                width:100%;
+                max-height:220px;
+                object-fit:cover;
+                border-radius:8px;
+                margin-bottom:12px;
+            ">
+    ` : ""}
 
-        <p>
-            <strong>Data do registo:</strong> ${report.date}
-        </p>
-    `);
+    <h3>${report.title}</h3>
+
+    <p style="margin:8px 0 0 0;">
+        <strong>Data do registo:</strong><br>
+        ${report.date}
+    </p>
+`);
     
     });
 
