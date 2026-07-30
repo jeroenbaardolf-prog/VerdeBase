@@ -120,11 +120,14 @@
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <script>
 
 var map = L.map('map').setView([38.565, -8.875], 14);
 
+const CSV_URL = "Form Fields - VBdataset.csv";
+    
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
 }).addTo(map);
@@ -178,114 +181,79 @@ map.on('locationerror', function() {
 
 // ===== Meldingen =====
 
-var reports = [
+var reports = [];
 
-{
-    lat: 38.56269957966968,
-    lng: -8.87521672994725,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "12-07-2026"
-},
+Papa.parse(CSV_URL, {
+    download: true,
+    header: true,
 
-{
-    lat: 38.56733510739968,
-    lng: -8.875168534004013,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "12-07-2026"
-},
+    complete: function(results) {
 
-{
-    lat: 38.56436821764578,
-    lng: -8.877762647593704,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "18-07-2026"
-},
+        reports = results.data
+             .filter(row => row.id && row.latitude && row.longitude)
+            .map(row => ({
+                id: row.id,
+                date: row.date,
+                lat: parseFloat(row.latitude),
+                lng: parseFloat(row.longitude),
+                photos: [
+                    row.photo_1,
+                    row.photo_2,
+                    row.photo_3,
+                    row.photo_4,
+                    row.photo_5
+                ].filter(photo => photo && photo.trim() !== "")
+            }));
 
-{
-    lat: 38.5662481766729,
-    lng: -8.872544959216482,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "18-07-2026"
-},
+        console.log(reports);
 
-{
-    lat: 38.56175569240257,
-    lng: -8.871115704288261,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "19-07-2026"
-},
+        // ===== Counter =====
+        document.getElementById("reportCount").innerText = reports.length;
 
-{
-    lat: 38.57060664734581,
-    lng: -8.854474502988547,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "21-07-2026"
-},
+        // ===== Rode marker =====
+        var redIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+            iconSize: [50, 82],
+            iconAnchor: [25, 82],
+            popupAnchor: [0, -76],
+            shadowSize: [82, 82]
+        });
 
-{
-    lat: 38.570586955850544,
-    lng: -8.854578171688466,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "21-07-2026"
-},
+        // ===== Markers plaatsen =====
+        reports.forEach(function(report) {
 
-{
-    lat: 38.574882510676,
-    lng: -8.85491496600609,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "21-07-2026"
-},
+            L.marker([report.lat, report.lng], {
+                icon: redIcon
+            })
+            .addTo(map)
+            .bindPopup(`
+                ${report.photos.length > 0 ? `
+                    <img
+                        src="${report.photos[0]}"
+                        loading="lazy"
+                        style="
+                            width:100%;
+                            max-height:220px;
+                            object-fit:cover;
+                            border-radius:8px;
+                            margin-bottom:12px;
+                        ">
+                ` : ""}
 
-{
-    lat: 38.56325903840659,
-    lng: -8.850115884052547,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "22-07-2026"
-},
+                <h3>${report.id}</h3>
 
-{
-    lat: 38.5632961578136,
-    lng: -8.850205888014797,
-    title: "Depósito ilegal de resíduos de construção",
-    date: "22-07-2026"
-}
+                <p style="margin:8px 0 0 0;">
+                    <strong>Data do registo:</strong><br>
+                    ${report.date}
+                </p>
+            `);
 
-];
+        });
 
-// ===== Counter =====
-
-document.getElementById("reportCount").innerText = reports.length;
-
-// ===== Rode marker =====
-
-var redIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-
-    iconSize: [50, 82],
-    iconAnchor: [25, 82],
-    popupAnchor: [0, -76],
-    shadowSize: [82, 82]
+    }
 });
-
-// ===== Markers plaatsen =====
-
-reports.forEach(function(report) {
-
-    L.marker([report.lat, report.lng], {
-        icon: redIcon
-    })
-    .addTo(map)
-    .bindPopup(`
-        <h3>${report.title}</h3>
-
-        <p>
-            <strong>Data do registo:</strong> ${report.date}
-        </p>
-    `);
     
-    });
-
 // ===== GPS knop =====
 
 var gpsControl = L.control({ position: 'topleft' });
