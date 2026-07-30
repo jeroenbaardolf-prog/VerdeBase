@@ -190,7 +190,7 @@ Papa.parse(CSV_URL, {
     complete: function(results) {
 
         reports = results.data
-            .filter(row => row.latitude && row.longitude)
+             .filter(row => row.id && row.latitude && row.longitude)
             .map(row => ({
                 id: row.id,
                 date: row.date,
