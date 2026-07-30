@@ -322,7 +322,7 @@ reports.forEach(function(report) {
 
             index = (index - 1 + photos.length) % photos.length;
 
-            image.src = photos[index];
+            image.setAttribute("src", photos[index]);
             counter.textContent = index + 1;
         });
 
