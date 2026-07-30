@@ -266,37 +266,79 @@ Papa.parse(CSV_URL, {
         });
 
         // ===== Markers plaatsen =====
-        reports.forEach(function(report) {
+reports.forEach(function(report) {
 
-            L.marker([report.lat, report.lng], {
-                icon: redIcon
-            })
-            .addTo(map)
-            .bindPopup(`
-                ${report.photos.length > 0 ? `
-                    <img
-                        src="${report.photos[0]}"
-                        loading="lazy"
-                        style="
-                            width:100%;
-                            max-height:220px;
-                            object-fit:cover;
-                            border-radius:8px;
-                            margin-bottom:12px;
-                        ">
-                ` : ""}
+    L.marker([report.lat, report.lng], {
+        icon: redIcon
+    })
+    .addTo(map)
+    .bindPopup(`
+        ${report.photos.length > 0 ? `
+        <div class="popup-carousel"
+             data-photos='${JSON.stringify(report.photos)}'>
 
-                <h3>${report.id}</h3>
+            <img
+                class="carousel-image"
+                src="${report.photos[0]}"
+                loading="lazy">
 
-                <p style="margin:8px 0 0 0;">
-                    <strong>Data do registo:</strong><br>
-                    ${report.date}
-                </p>
-            `);
+            ${report.photos.length > 1 ? `
+                <button class="carousel-prev">❮</button>
+                <button class="carousel-next">❯</button>
 
+                <div class="carousel-counter">
+                    <span class="current-photo">1</span> / ${report.photos.length}
+                </div>
+            ` : ""}
+
+        </div>
+        ` : ""}
+
+        <h3>${report.id}</h3>
+
+        <p style="margin:8px 0 0 0;">
+            <strong>Data do registo:</strong><br>
+            ${report.date}
+        </p>
+    `)
+    .on("popupopen", function(e) {
+
+        const popup = e.popup.getElement();
+        const carousel = popup.querySelector(".popup-carousel");
+
+        if (!carousel) return;
+
+        const photos = JSON.parse(carousel.dataset.photos);
+
+        if (photos.length <= 1) return;
+
+        let index = 0;
+
+        const image = carousel.querySelector(".carousel-image");
+        const counter = carousel.querySelector(".current-photo");
+
+        carousel.querySelector(".carousel-prev").addEventListener("click", function(event) {
+
+            L.DomEvent.stopPropagation(event);
+
+            index = (index - 1 + photos.length) % photos.length;
+
+            image.src = photos[index];
+            counter.textContent = index + 1;
         });
 
-    }
+        carousel.querySelector(".carousel-next").addEventListener("click", function(event) {
+
+            L.DomEvent.stopPropagation(event);
+
+            index = (index + 1) % photos.length;
+
+            image.src = photos[index];
+            counter.textContent = index + 1;
+        });
+
+    });
+
 });
     
 // ===== GPS knop =====
