@@ -265,7 +265,7 @@ Papa.parse(CSV_URL, {
             shadowSize: [82, 82]
         });
 
-        // ===== Markers plaatsen =====
+// ===== Markers plaatsen =====
 reports.forEach(function(report) {
 
     L.marker([report.lat, report.lng], {
@@ -318,7 +318,6 @@ reports.forEach(function(report) {
         const counter = carousel.querySelector(".current-photo");
 
         carousel.querySelector(".carousel-prev").addEventListener("click", function(event) {
-
             L.DomEvent.stopPropagation(event);
 
             index = (index - 1 + photos.length) % photos.length;
@@ -328,7 +327,6 @@ reports.forEach(function(report) {
         });
 
         carousel.querySelector(".carousel-next").addEventListener("click", function(event) {
-
             L.DomEvent.stopPropagation(event);
 
             index = (index + 1) % photos.length;
@@ -337,10 +335,14 @@ reports.forEach(function(report) {
             counter.textContent = index + 1;
         });
 
+    });
+
+});
+
     }
 
 });
-    
+
 // ===== GPS knop =====
 
 var gpsControl = L.control({ position: 'topleft' });
