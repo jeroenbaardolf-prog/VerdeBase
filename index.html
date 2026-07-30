@@ -252,15 +252,6 @@ Papa.parse(CSV_URL, {
 
         console.log(reports);
 
-// ===== Preload all report photos =====
-
-reports.forEach(function(report) {
-    report.photos.forEach(function(url) {
-        const img = new Image();
-        img.src = url;
-    });
-});
-
         // ===== Counter =====
         document.getElementById("reportCount").innerText = reports.length;
 
